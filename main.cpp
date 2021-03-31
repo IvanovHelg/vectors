@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 struct subvector {
@@ -37,8 +38,8 @@ bool resize(subvector *qv, unsigned int new_capacity){
     qv -> capacity = new_capacity;
 }
 
-void shrink_to_fit(subvector *qv){
-
+void shrink_to_fit(subvector* qv) {
+    qv->capacity = qv->top;
 }
 
 void clear(subvector *qv){
@@ -51,6 +52,26 @@ void destructor(subvector *qv){
     qv_1 -> mas = NULL;
     qv_1 -> top = 0;
 
+}
+
+void init_from_file(subvector* qv, std::string filename) {
+    ifstream fromFile(filename, ios::in);
+    if (fromFile.is_open())
+    {
+        int count = 0;
+        fromFile >> count;
+        for (int i = 0; i < count; ++i)
+        {
+            int element;
+            fromFile >> element;
+            push_back(qv, element);
+        }
+    }
+    else
+    {
+        cout << "The txt file doesn't open to reading" << endl;
+    }
+    fromFile.close();
 }
 
 int main(){
